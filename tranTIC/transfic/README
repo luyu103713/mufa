@@ -1,0 +1,30 @@
+0. What does Condel do?
+
+Condel (Consensus deleterious score of missense mutations) computes a weighed average of the scores (WAS) of five known computational tools aimed at classifying missense mutations as likely deleterious or likely neutral.The tools included in Condel are SIFT (http://sift.jcvi.org/), Polyphen2 (http://genetics.bwh.harvard.edu/pph2/dokuwiki/downloads), MAPP (http://mendel.stanford.edu/sidowlab/downloads/MAPP/index.html), LogR Pfam E-value (implemented ad hoc following the instructions at Clifford, R. J., Edmonson, M. N., Nguyen, C., and Buetow, K. H. (2004). Large-scale analysis of non-synonymous coding region single nucleotide polymorphisms. Bioinformatics 20, 1006-1014) and Mutation Assessor (http://xvar.org/).
+
+1. How does it work?
+
+The scores of different methods are weighed using the complementary cumulative distributions produced by the five methods on a dataset of approximately 20000 missense SNPs, both deleterious and neutral. The probability that a predicted deleterious mutation is not a false positive of the method and the probability that a prediected neutral mutation is not a false negative are employed as weights. These weights fine tune the scores of the five methods to produce an integrated consensus score for each mutation.
+
+2. How does it performs?
+
+Condel accurately classified 83.4% of the mutations in the ~20000 missense SNPs used originally to compute the weights. It also accuartely classified 88.6% of another dataset composed of deleterious mutations and aminoacid changes found in mammalian orthologous proteins. In the first dataset, the accuracy was calculated at 87% sensitivity, which is also the cutoff employed by the script distributed in this package to classify a mutation as deleterious. 
+
+In addition, the mean WAS of more than 12000 differently recurring cancer mutations were shown to be signifficantly different, and the mean WAS of more than 2000 TP53 mutants correlated well with the decrease in the transactivation of transcription exhibited by these mutants. Therefore, the WAS proved to be a good indicator of the deleteriousness of a given mutation.
+
+3. Installation
+
+a)Unpack the tar.gz into a directory and modify the "condel.dir" environment variable in the condel.conf file accordingly. The executable is the was.pl PERL script in the bin directory.
+b)Run the five abovementioned programs, or a subset thereof on your list of missense mutations. Note that all of them may be run through the web. Three may be downloaded and installed locally, and a fourth may readily be implemented
+c)Run the script in bin using the syntaxis: was.pl config_dir scored_mutations_set
+
+4. How to run Condel?
+
+The was.pl script takes two arguments. The first is the config directory, and the second is the file with the scores of the five methods for the mutations that want to be assessed. The format of this file must be as the example file provided in the methdist directory. However, this format may be readily altered if needed by the user, by arranging the code of the script.
+
+When was.pl is launched, it converts the complementary cumulative distributions of the five tools included in Condel (provided in the methdist directory as separate files) into a hash. Then, for every mutation in the input file, the script reads the score values produced by the five tools, and computes the corresponding WAS.
+
+5. Where to find Condel?
+
+Condel was designed and implemented by the Biomedical Genomics Group of the Universitat Pompeu Fabra, at the Barcelona Biomedical Research Park (bg.upf.edu/Condel)
+
